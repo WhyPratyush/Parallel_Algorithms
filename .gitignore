@@ -1,0 +1,41 @@
+# Compiled binaries & object files
+bin/
+*.o
+*.obj
+*.so
+*.dylib
+*.out
+*.exe
+
+# CUDA & Nsight profiler reports (too large for git)
+*.ptx
+*.cubin
+*.fatbin
+*.ncu-rep
+*.nsys-rep
+*.qdstrm
+*.sqlite
+
+# Generated input datasets
+input.txt
+*.bin
+*.dat
+
+# Keep latest.csv and plots for READMEs, ignore timestamped run spam
+results/*_[0-9]*.csv
+results/*.csv
+
+# Python & Jupyter / Colab
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Editor & OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
