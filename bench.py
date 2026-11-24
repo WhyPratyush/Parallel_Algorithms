@@ -398,6 +398,7 @@ def parse_args():
     ap.add_argument("--no-pin", action="store_true", help="do not set OMP_PROC_BIND/OMP_PLACES")
     ap.add_argument("--no-build", action="store_true", help="reuse existing binaries in bin/")
     ap.add_argument("--plot", action="store_true", help="write results/<algo>.png (needs matplotlib)")
+    ap.add_argument("--tag", default="", help="write results to results/<tag>/ (e.g. colab_T4)")
     ap.set_defaults(**{k.replace("-", "_"): v for k, v in cfg.items()})
     return ap.parse_args()
 
@@ -412,9 +413,10 @@ def main():
     args = parse_args()
     folder = Path(args.dir).resolve()
     algo = folder.name
-    bin_dir, res_dir = folder / "bin", folder / "results"
+    bin_dir = folder / "bin"
+    res_dir = folder / "results" / args.tag if args.tag else folder / "results"
     bin_dir.mkdir(exist_ok=True)
-    res_dir.mkdir(exist_ok=True)
+    res_dir.mkdir(parents=True, exist_ok=True)
 
     sizes = [int(float(s)) for s in as_list(args.sizes)]
     ncpu = os.cpu_count() or 1

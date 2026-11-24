@@ -22,8 +22,8 @@ input.txt
 *.dat
 
 # Keep latest.csv and plots for READMEs, ignore timestamped run spam
-results/*_[0-9]*.csv
-results/*.csv
+**/results/*.csv
+!**/results/latest.csv
 
 # Python & Jupyter / Colab
 __pycache__/
