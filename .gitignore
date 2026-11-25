@@ -24,6 +24,8 @@ input.txt
 # Keep latest.csv and plots for READMEs, ignore timestamped run spam
 **/results/*.csv
 !**/results/latest.csv
+**/results/Colab/*.csv
+!**/results/Colab/latest.csv
 
 # Python & Jupyter / Colab
 __pycache__/
@@ -39,3 +41,6 @@ venv/
 *.swo
 .DS_Store
 Thumbs.db
+
+*:Zone.Identifier
+*.zip

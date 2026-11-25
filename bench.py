@@ -323,7 +323,7 @@ def print_row(r):
     print("  " + " ".join(f"{v:{a}{w}}" for v, (_, w, a) in zip(vals, COLS)))
 
 
-def make_plot(rows, path, algo):
+def make_plot(rows, path, algo, peak_gpu=None):
     try:
         import matplotlib
         matplotlib.use("Agg")
@@ -343,7 +343,12 @@ def make_plot(rows, path, algo):
         label = f"{name} ({maxthr} thr)" if maxthr else name
         ax[0].plot([r["n"] for r in rs], [r["time_ms"] for r in rs], marker="o", label=label)
         ax[1].plot([r["n"] for r in rs], [r["gbps"] for r in rs], marker="o", label=label)
+        if all(r["total_ms"] for r in rs):
+            ax[0].plot([r["n"] for r in rs], [r["total_ms"] for r in rs], marker="x",
+                       linestyle="--", color=ax[0].lines[-1].get_color(), label=f"{name} (+transfer)")
     ax[0].set(xscale="log", yscale="log", xlabel="n", ylabel="median time (ms)", title="Time vs n")
+    if peak_gpu:
+        ax[1].axhline(peak_gpu, linestyle=":", color="gray")   
     ax[1].set(xscale="log", xlabel="n", ylabel="effective GB/s", title="Effective bandwidth")
     ax[0].legend(fontsize=7)
     nmax = max(r["n"] for r in good)
@@ -534,7 +539,7 @@ def main():
             w.writerows({k: ("" if r[k] is None else r[k]) for k in fields} for r in rows)
     print(f"\nresults written to {out}  (and results/latest.csv)")
     if args.plot:
-        make_plot(rows, res_dir / f"{algo}.png", algo)
+        make_plot(rows, res_dir / f"{algo}.png", algo, peak_gpu)
 
     if any_fail:
         print("\nSOME CONFIGURATIONS FAILED - check the verify column above.")
